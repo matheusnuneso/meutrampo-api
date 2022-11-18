@@ -2,7 +2,7 @@ package com.easyserviceapi.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.transaction.Transactional;
 
@@ -33,7 +33,7 @@ public class UserService {
         return userRepository.existsByUserName(userName);
     }
 
-    public Optional<UserModel> findById(UUID id) {
+    public Optional<UserModel> findById(Long id) {
         return userRepository.findById(id);
     }
 

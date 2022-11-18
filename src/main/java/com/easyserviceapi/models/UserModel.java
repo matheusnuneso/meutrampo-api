@@ -1,7 +1,7 @@
 package com.easyserviceapi.models;
 
 import java.io.Serializable;
-import java.util.UUID;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +18,7 @@ public class UserModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Long id;
 
     @Column(nullable = false, length = 70)
     private String userName;
@@ -30,11 +30,11 @@ public class UserModel implements Serializable {
         return serialVersionUID;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

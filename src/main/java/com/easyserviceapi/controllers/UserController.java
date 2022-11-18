@@ -2,7 +2,7 @@ package com.easyserviceapi.controllers;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import javax.validation.Valid;
 
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneParkingSopt(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<Object> getOneParkingSopt(@PathVariable(value = "id") Long id) {
         Optional<UserModel> parkingSpotModelOptional = userService.findById(id);
         if (!parkingSpotModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<Object> deleteUser(@PathVariable(value = "id") Long id) {
         Optional<UserModel> userModelOptional = userService.findById(id);
         if (!userModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID id, @RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") Long id, @RequestBody @Valid UserDto userDto) {
         Optional<UserModel> userModelOptional = userService.findById(id);
         if (!userModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
