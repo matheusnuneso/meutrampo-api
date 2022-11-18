@@ -23,22 +23,21 @@ import com.easyserviceapi.dto.UserDto;
 import com.easyserviceapi.models.UserModel;
 import com.easyserviceapi.services.UserService;
 
-
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/user")
 public class UserController {
-    
+
     final UserService userService;
 
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDto userDto){
+    public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDto userDto) {
 
-        if(userService.existsByUserName(userDto.getUserName())){
+        if (userService.existsByUserName(userDto.getUserName())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: UserName is already in use");
         }
 
@@ -46,11 +45,11 @@ public class UserController {
         BeanUtils.copyProperties(userDto, userModel);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(userModel));
-        
+
     }
-    
+
     @GetMapping
-    public ResponseEntity<List<UserModel>> getAllUser(){
+    public ResponseEntity<List<UserModel>> getAllUser() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
     }
 
@@ -62,11 +61,11 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
     }
-    
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Object> deleteUser(@PathVariable(value = "id") UUID id) {
         Optional<UserModel> userModelOptional = userService.findById(id);
-        if(!userModelOptional.isPresent()){
+        if (!userModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
         userService.delete(userModelOptional.get());
@@ -74,9 +73,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID id, @RequestBody @Valid UserDto userDto){
+    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") UUID id, @RequestBody @Valid UserDto userDto) {
         Optional<UserModel> userModelOptional = userService.findById(id);
-        if(!userModelOptional.isPresent()){
+        if (!userModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
@@ -86,6 +85,5 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.save(userModel));
     }
-    
 
 }

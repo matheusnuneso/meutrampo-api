@@ -16,29 +16,29 @@ public class UserService {
 
     final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-@Transactional
-public Object save(UserModel userModel) {
-    return userRepository.save(userModel);
+    @Transactional
+    public Object save(UserModel userModel) {
+        return userRepository.save(userModel);
     }
 
-public List<UserModel> findAll() {
-    return userRepository.findAll();
+    public List<UserModel> findAll() {
+        return userRepository.findAll();
     }
 
-public boolean existsByUserName(String userName) {
-    return userRepository.existsByUserName(userName);
-}
+    public boolean existsByUserName(String userName) {
+        return userRepository.existsByUserName(userName);
+    }
 
-public Optional<UserModel> findById(UUID id) {
-    return userRepository.findById(id);
-}
+    public Optional<UserModel> findById(UUID id) {
+        return userRepository.findById(id);
+    }
 
-public void delete(UserModel userModel) {
-    userRepository.delete(userModel);
-}
-    
+    public void delete(UserModel userModel) {
+        userRepository.delete(userModel);
+    }
+
 }

@@ -6,11 +6,11 @@ import javax.validation.constraints.Size;
 public class UserDto {
     @NotBlank
     @Size(max = 70)
-        private String userName;
+    private String userName;
 
     @NotBlank
     @Size(max = 10)
-        private String password;
+    private String password;
 
     public String getUserName() {
         return userName;

@@ -10,32 +10,25 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-
-@Table (name = "TB_USER")
-
+@Table(name = "TB_USER")
 @Entity
 public class UserModel implements Serializable {
-    
+
     private static final Long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-        private UUID id;
+    private UUID id;
 
     @Column(nullable = false, length = 70)
-        private String userName;
-        
+    private String userName;
+
     @Column(nullable = false, length = 10)
-        private String password;
+    private String password;
 
-
-    
-
-    public static Long getSerialversionuid(){
+    public static Long getSerialversionuid() {
         return serialVersionUID;
     }
-
-
 
     public UUID getId() {
         return id;
@@ -60,5 +53,5 @@ public class UserModel implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
 }
