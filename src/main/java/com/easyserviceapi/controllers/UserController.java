@@ -3,7 +3,6 @@ package com.easyserviceapi.controllers;
 import java.util.List;
 import java.util.Optional;
 
-
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -55,11 +54,11 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneParkingSopt(@PathVariable(value = "id") Long id) {
-        Optional<UserModel> parkingSpotModelOptional = userService.findById(id);
-        if (!parkingSpotModelOptional.isPresent()) {
+        Optional<UserModel> userModelOptional = userService.findById(id);
+        if (!userModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModelOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body(userModelOptional.get());
     }
 
     @DeleteMapping("/{id}")
@@ -75,8 +74,13 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable(value = "id") Long id, @RequestBody @Valid UserDto userDto) {
         Optional<UserModel> userModelOptional = userService.findById(id);
+        
         if (!userModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        if (userService.existsByUserName(userDto.getUserName()) && !(userModelOptional.get().getUserName().equals(userDto.getUserName()))) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: UserName is already in use");
         }
 
         var userModel = userModelOptional.get();
