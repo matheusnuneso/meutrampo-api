@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneParkingSopt(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Object> getOneUser(@PathVariable(value = "id") Long id) {
         Optional<UserModel> userModelOptional = userService.findById(id);
         if (!userModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
