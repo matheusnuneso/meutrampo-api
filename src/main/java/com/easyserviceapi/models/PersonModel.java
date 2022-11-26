@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -31,8 +29,35 @@ public class PersonModel implements Serializable {
     @Column(nullable = false, length = 14)
     private String cpf;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private UserModel user;
+    @Column(nullable = false, length = 70)
+    private String userName;
+
+    @Column(nullable = false, length = 10)
+    private String password;
 
 }
+
+/*User
+- id
+- userName
+- password
+
+Person
+- id
+- fullName
+- email
+- cpf
+- idUser (da tbl User)
+
+Job
+- id
+- title
+- price
+- idPerson (da tbl Person)
+
+JobSigned
+- id
+- idJob (da tbl Job)
+- finalPrice
+- idClient (da tbl Person)
+- idProvider (da tbl Person) */

@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class PersonDto {
+
     @NotBlank
     @Size(max = 70)
     private String fullName;
@@ -18,4 +19,13 @@ public class PersonDto {
     @NotBlank
     @Size(max = 14)
     private String cpf;
+
+    @NotBlank
+    @Size(max = 70)
+    private String userName;
+
+    @NotBlank
+    @Size(max = 10)
+    private String password;
+    
 }

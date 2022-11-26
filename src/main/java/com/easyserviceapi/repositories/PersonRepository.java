@@ -8,6 +8,6 @@ import com.easyserviceapi.models.PersonModel;
 @Repository
 public interface PersonRepository extends JpaRepository<PersonModel, Long> {
 
-    boolean existsByFullName(String fullName);
+    boolean existsByUserName(String userName);
     
 }

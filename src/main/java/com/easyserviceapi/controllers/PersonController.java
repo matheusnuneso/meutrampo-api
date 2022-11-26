@@ -38,8 +38,8 @@ public class PersonController {
     @PostMapping
     public ResponseEntity<Object> savePerson(@RequestBody @Valid PersonDto personDto){
 
-        if (personService.existsByFullName(personDto.getFullName())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: FullName is already in use");
+        if (personService.existsByUserName(personDto.getUserName())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: UserName is already in use");
         }
 
         var personModel = new PersonModel();
@@ -67,28 +67,23 @@ public class PersonController {
     public ResponseEntity<Object> deletePerson(@PathVariable(value = "id") Long id){
         Optional<PersonModel> personModelOptional = personService.findById(id);
         if (!personModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
         personService.delete(personModelOptional.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Person delet successfully");
+        return ResponseEntity.status(HttpStatus.OK).body("Delete concluído");
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updatePerson(@PathVariable(value = "id") Long id, @RequestBody @Valid PersonDto personDto) {
         Optional<PersonModel> personModelOptional = personService.findById(id);
         if(!personModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
-        if (personService.existsByFullName(personDto.getFullName())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: FullName is already in use");
+        if (personService.existsByUserName(personDto.getUserName())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: UserName ja está em uso");
         }
 
-        var personModel = personModelOptional.get();
-        personModel.setFullName(personDto.getFullName());
-        personModel.setEmail(personDto.getEmail());
-        personModel.setCpf(personDto.getCpf());
-
-        return ResponseEntity.status(HttpStatus.OK).body(personService.save(personModel));
+        return ResponseEntity.status(HttpStatus.OK).body(personService.update(id, personDto));
 
     }
 }

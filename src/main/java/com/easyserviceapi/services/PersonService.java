@@ -6,8 +6,10 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.easyserviceapi.dto.PersonDto;
 import com.easyserviceapi.models.PersonModel;
 import com.easyserviceapi.repositories.PersonRepository;
 
@@ -29,15 +31,24 @@ public class PersonService {
         return personRepository.findAll();
     }
 
-    public boolean existsByFullName(String fullName){
-        return personRepository.existsByFullName(fullName);
+    public boolean existsByUserName(String userName) {
+        return personRepository.existsByUserName(userName);
     }
 
     public Optional<PersonModel> findById(Long id){
         return personRepository.findById(id);
     }
 
+    @Transactional
     public void delete(PersonModel personModel){
         personRepository.delete(personModel);
+    }
+
+    public PersonModel update(Long id, PersonDto personDto){
+        PersonModel personModel = new PersonModel();
+        BeanUtils.copyProperties(personDto, personModel);
+        personModel.setId(id);
+
+        return personRepository.save(personModel);
     }
 }
