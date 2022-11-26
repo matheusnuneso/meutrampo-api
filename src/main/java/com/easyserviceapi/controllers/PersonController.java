@@ -39,7 +39,7 @@ public class PersonController {
     public ResponseEntity<Object> savePerson(@RequestBody @Valid PersonDto personDto){
 
         if (personService.existsByUserName(personDto.getUserName())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: UserName is already in use");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: UserName já está em uso");
         }
 
         var personModel = new PersonModel();
@@ -58,7 +58,7 @@ public class PersonController {
     public ResponseEntity<Object> getOnePerson(@PathVariable(value = "id") Long id){
         Optional<PersonModel> personModelOptional = personService.findById(id);
         if (!personModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pessoa não encontrada");
         }
         return ResponseEntity.status(HttpStatus.OK).body(personModelOptional.get());
     }

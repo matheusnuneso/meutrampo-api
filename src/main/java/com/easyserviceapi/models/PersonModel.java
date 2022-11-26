@@ -37,13 +37,10 @@ public class PersonModel implements Serializable {
 
 }
 
-/*User
+/*Person
 - id
 - userName
 - password
-
-Person
-- id
 - fullName
 - email
 - cpf
