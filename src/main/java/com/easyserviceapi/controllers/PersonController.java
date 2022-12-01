@@ -79,6 +79,7 @@ public class PersonController {
         if(!personModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
+        
         if (personService.existsByUserName(personDto.getUserName())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: UserName ja está em uso");
         }

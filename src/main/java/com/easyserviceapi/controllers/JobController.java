@@ -3,7 +3,7 @@ package com.easyserviceapi.controllers;
 import java.util.List;
 import java.util.Optional;
 
-//import javax.validation.Valid; 
+import javax.validation.Valid; 
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -35,17 +35,13 @@ public class JobController {
         this.jobService = jobService;
     }
     
-    
-    //Foi retirado a validação 
     @PostMapping
-    public ResponseEntity<Object> saveJob(@RequestBody  JobDto jobDto){
-        
+    public ResponseEntity<Object> saveJob(@RequestBody @Valid JobDto jobDto){        
         
         var jobModel = new JobModel();
         BeanUtils.copyProperties(jobDto, jobModel);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(jobService.save(jobModel));
-
     }
 
     @GetMapping
@@ -76,7 +72,7 @@ public class JobController {
 
     //Foi retirado a validação 
     @PutMapping("/{id}")    
-    public ResponseEntity<Object> updateJob (@PathVariable(value = "id") Long id, @RequestBody JobDto jobDto){
+    public ResponseEntity<Object> updateJob (@PathVariable(value = "id") Long id, @RequestBody @Valid JobDto jobDto){
         Optional<JobModel> jobModelOptional = jobService.findById(id);
         if(!jobModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trabalho não encontrado");
