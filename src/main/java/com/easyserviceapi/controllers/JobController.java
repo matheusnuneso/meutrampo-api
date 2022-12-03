@@ -65,6 +65,14 @@ public class JobController {
 
     }
 
+    @GetMapping("/person-jobs/{idPerson}")
+    public ResponseEntity<Object> getPersonJobs (@PathVariable(value = "idPerson") Long idPerson){
+        if(jobService.existsByIdPerson(idPerson)){
+            return ResponseEntity.status(HttpStatus.OK).body(jobService.findByIdPerson(idPerson));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteJob(@PathVariable(value = "id") Long id){
         Optional<JobModel> jobModelOptional = jobService.findById(id);

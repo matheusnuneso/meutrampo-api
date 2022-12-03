@@ -39,6 +39,15 @@ public class JobService {
         return jobRepository.findById(id);
     }
 
+    public boolean existsByIdPerson(Long idPerson){
+        return jobRepository.existsByIdPerson(idPerson);
+    }
+
+    public List<JobModel> findByIdPerson(Long idPerson){
+        return jobRepository.findByIdPerson(idPerson);
+    }
+ 
+
     @Transactional
     public void delete(JobModel jobModel){
         jobRepository.delete(jobModel);
