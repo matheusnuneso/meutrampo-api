@@ -83,15 +83,13 @@ public class JobController {
         return ResponseEntity.status(HttpStatus.OK).body("Delete concluído");
     }
 
-
-    //Foi retirado a validação 
     @PutMapping("/{id}")    
     public ResponseEntity<Object> updateJob (@PathVariable(value = "id") Long id, @RequestBody @Valid JobDto jobDto){
         Optional<JobModel> jobModelOptional = jobService.findById(id);
         if(!jobModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trabalho não encontrado");
         }
-        //Acredito que este teste não seja necessário por não se tratar de um atributo chave
+        
         if(jobService.existsByTitle(jobDto.getTitle())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflito");
         }
