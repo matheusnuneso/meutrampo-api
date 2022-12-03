@@ -40,7 +40,7 @@ public class PersonController {
     public ResponseEntity<Object> savePerson(@RequestBody @Valid PersonDto personDto) {
 
         if (personService.existsByUserName(personDto.getUserName())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: UserName já está em uso");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("UserName já está em uso");
         }
 
         var personModel = new PersonModel();
@@ -50,7 +50,7 @@ public class PersonController {
 
     }
 
-    @PostMapping("/{login}")
+    @PostMapping("/authPerson")
     public ResponseEntity<Object> authPerson(@RequestBody @Valid CredentialsDto credentialsDto) {
 
         if (personService.existsByUserName(credentialsDto.getUserName())) {
@@ -58,10 +58,10 @@ public class PersonController {
             if (personModelOptional.get().getPassword().equals(credentialsDto.getPassword())) {
                 return ResponseEntity.status(HttpStatus.OK).body(personModelOptional.get());
             } else
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: Senha incorreta");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Senha incorreta");
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND: UserName não encontrado ");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado ");
 
     }
 
@@ -74,7 +74,7 @@ public class PersonController {
     public ResponseEntity<Object> getOnePerson(@PathVariable(value = "id") Long id) {
         Optional<PersonModel> personModelOptional = personService.findById(id);
         if (!personModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT_FOUND: Usuario não encontrada");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
         return ResponseEntity.status(HttpStatus.OK).body(personModelOptional.get());
     }
@@ -83,10 +83,10 @@ public class PersonController {
     public ResponseEntity<Object> deletePerson(@PathVariable(value = "id") Long id) {
         Optional<PersonModel> personModelOptional = personService.findById(id);
         if (!personModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT_FOUND: Usuário não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
         personService.delete(personModelOptional.get());
-        return ResponseEntity.status(HttpStatus.OK).body("OK: Delete concluído");
+        return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado com sucesso");
     }
 
     @PutMapping("/{id}")
@@ -94,12 +94,12 @@ public class PersonController {
             @RequestBody @Valid PersonDto personDto) {
         Optional<PersonModel> personModelOptional = personService.findById(id);
         if (!personModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT_FOUND: Usuário não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
 
         if (!personModelOptional.get().getUserName().equals(personDto.getUserName())) {
             if (personService.existsByUserName(personDto.getUserName())) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: UserName ja está em uso");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("UserName ja está em uso");
             }
         }
 
