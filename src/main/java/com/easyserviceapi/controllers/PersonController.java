@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.easyserviceapi.dto.CredentialsDto;
 import com.easyserviceapi.dto.PersonDto;
 import com.easyserviceapi.models.PersonModel;
 import com.easyserviceapi.services.PersonService;
@@ -49,6 +50,21 @@ public class PersonController {
 
     }
 
+    @PostMapping("/{login}")
+    public ResponseEntity<Object> authPerson(@RequestBody @Valid CredentialsDto credentialsDto) {
+
+        if (personService.existsByUserName(credentialsDto.getUserName())) {
+            Optional<PersonModel> personModelOptional = personService.findByUserName(credentialsDto.getUserName());
+            if (personModelOptional.get().getPassword().equals(credentialsDto.getPassword())) {
+                return ResponseEntity.status(HttpStatus.OK).body(personModelOptional.get());
+            } else
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("CONFLICT: Senha incorreta");
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND: UserName não encontrado ");
+
+    }
+
     @GetMapping
     public ResponseEntity<List<PersonModel>> getAllPerson() {
         return ResponseEntity.status(HttpStatus.OK).body(personService.findAll());
@@ -58,26 +74,9 @@ public class PersonController {
     public ResponseEntity<Object> getOnePerson(@PathVariable(value = "id") Long id) {
         Optional<PersonModel> personModelOptional = personService.findById(id);
         if (!personModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT_FOUND: Pessoa não encontrada");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT_FOUND: Usuario não encontrada");
         }
         return ResponseEntity.status(HttpStatus.OK).body(personModelOptional.get());
-    }
-
-    @GetMapping("/{userName}" + "/{password}")
-    public ResponseEntity<Object> authPerson(@PathVariable(value = "userName") String userName,
-            @PathVariable(value = "password") String password) {
-
-        if (personService.existsByUserName(userName)) {
-            Optional<PersonModel> personModelOptional = personService.findByUserName(userName);
-            if (personModelOptional.get().getPassword().equals(password)) {
-                return ResponseEntity.status(HttpStatus.OK).body(personModelOptional.get());
-            } else
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT_FOUND: senha incorreta");
-
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND: UserName não encontrado ");
-
     }
 
     @DeleteMapping("/{id}")
