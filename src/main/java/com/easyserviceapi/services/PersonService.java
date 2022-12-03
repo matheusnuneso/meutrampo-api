@@ -39,6 +39,16 @@ public class PersonService {
         return personRepository.findById(id);
     }
 
+    public PersonModel getOne(Long id){
+        return personRepository.getReferenceById(id);
+    }
+
+    public Optional<PersonModel> findByUserName(String userName){
+        Optional<PersonModel> personModelOptional = personRepository.findByUserName(userName);
+        return personModelOptional;
+    }
+
+
     @Transactional
     public void delete(PersonModel personModel){
         personRepository.delete(personModel);

@@ -10,4 +10,5 @@ public interface JobRepository extends JpaRepository<JobModel,Long> {
 
     boolean existsByTitle(String title);
 
+
 }

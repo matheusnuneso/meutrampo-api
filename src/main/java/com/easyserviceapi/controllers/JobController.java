@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.easyserviceapi.dto.JobDto;
 import com.easyserviceapi.models.JobModel;
 import com.easyserviceapi.services.JobService;
+import com.easyserviceapi.services.PersonService;
 
 import lombok.var;
 
@@ -28,11 +29,16 @@ import lombok.var;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/job")
 public class JobController {
+    
+
+
 
     final JobService jobService;
+    final PersonService personService;
 
-    public JobController(JobService jobService){
+    public JobController(JobService jobService, PersonService personService){
         this.jobService = jobService;
+        this.personService= personService;
     }
     
     @PostMapping
