@@ -27,7 +27,7 @@ import lombok.var;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping(value = "/person")
+@RequestMapping(value = "api/person")
 public class PersonController {
 
     final PersonService personService;
