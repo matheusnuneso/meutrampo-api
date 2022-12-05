@@ -58,7 +58,7 @@ public class PersonController {
             if (personModelOptional.get().getPassword().equals(credentialsDto.getPassword())) {
                 return ResponseEntity.status(HttpStatus.OK).body(personModelOptional.get());
             } else
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Senha incorreta");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Senha incorreta");
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado ");
