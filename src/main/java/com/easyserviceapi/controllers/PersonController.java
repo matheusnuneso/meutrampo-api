@@ -43,6 +43,10 @@ public class PersonController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("UserName já está em uso");
         }
 
+        if(personDto.getPassword().equals("")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Senha em branco");
+        }
+
         var personModel = new PersonModel();
         BeanUtils.copyProperties(personDto, personModel);
 
@@ -95,6 +99,10 @@ public class PersonController {
         Optional<PersonModel> personModelOptional = personService.findById(id);
         if (!personModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+
+        if(personDto.getPassword().equals("")){
+            personDto.setPassword(personModelOptional.get().getPassword());
         }
 
         if (!personModelOptional.get().getUserName().equals(personDto.getUserName())) {
