@@ -1,6 +1,7 @@
 package com.easyserviceapi.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -24,6 +25,7 @@ public class PersonDto {
     @Size(max = 70)
     private String userName;
 
+    @NotNull
     @Size(max = 10)
     private String password;
     
