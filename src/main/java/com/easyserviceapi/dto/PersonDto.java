@@ -24,7 +24,6 @@ public class PersonDto {
     @Size(max = 70)
     private String userName;
 
-    @NotBlank
     @Size(max = 10)
     private String password;
     
