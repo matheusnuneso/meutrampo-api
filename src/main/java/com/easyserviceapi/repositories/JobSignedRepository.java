@@ -9,6 +9,6 @@ import com.easyserviceapi.models.JobSignedModel;
 @Repository
 public interface JobSignedRepository extends JpaRepository<JobSignedModel,Long> {
 
-    boolean existsByidJobAndJobDate(Long idJob, Date jobDate);
+    boolean existsByidPersonAndJobDate(Long idPerson, Date jobDate);
     
 }

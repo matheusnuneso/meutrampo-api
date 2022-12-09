@@ -2,29 +2,30 @@ package com.easyserviceapi.dto;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 
 @Data
 public class JobSignedDto {
 
 
-    @NotBlank
+    @NotNull
     private long idJob;
 
-    @NotBlank
+    @NotNull
     private double finalPrice;
     
-    @NotBlank
+    @NotNull
     private long idClient;
         
-    @NotBlank
+    @NotNull
     private long idPerson;
 
-    @NotBlank   
+    @NotNull   
     private Date jobDate;
     
-    @NotBlank    
+    @NotNull   
     private Date contractDate;
 
 }

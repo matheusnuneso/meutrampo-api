@@ -29,18 +29,18 @@ import lombok.var;
 public class JobSignedController {
 
     final JobSignedService jobSignedService;
-   
 
     public JobSignedController(JobSignedService jobSignedService) {
-        this.jobSignedService = jobSignedService;        
+        this.jobSignedService = jobSignedService;
     }
 
     @PostMapping
     public ResponseEntity<Object> saveJobSigned(@RequestBody @Valid JobSignedDto jobSignedDto) {
 
         var jobSignedModel = new JobSignedModel();
-        if(jobSignedService.existsJobSigned(jobSignedDto)){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe um serviço para este usuário realizar na data");
+        if (jobSignedService.existsJobSigned(jobSignedDto)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Já existe um serviço para este usuário realizar na data");
         }
 
         BeanUtils.copyProperties(jobSignedDto, jobSignedModel);
@@ -61,7 +61,7 @@ public class JobSignedController {
         }
         return ResponseEntity.status(HttpStatus.OK).body((jobSignedModelOptional.get()));
 
-    }   
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteJobSigned(@PathVariable(value = "id") Long id) {
@@ -73,18 +73,26 @@ public class JobSignedController {
         return ResponseEntity.status(HttpStatus.OK).body("Delete concluído");
     }
 
-     
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateJobSigned(@PathVariable(value = "id") Long id, @RequestBody @Valid JobSignedDto jobSignedDto) {
+    public ResponseEntity<Object> updateJobSigned(@PathVariable(value = "id") Long id,
+            @RequestBody @Valid JobSignedDto jobSignedDto) {
         Optional<JobSignedModel> jobSignedModelOptional = jobSignedService.findById(id);
         if (!jobSignedModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trabalho não encontrado");
         }
 
-        if(jobSignedService.existsJobSigned(jobSignedDto)){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe um serviço para este usuário realizar na data");
+        if (
+            jobSignedModelOptional.get().getIdPerson() == jobSignedDto.getIdPerson() &&  //VERIFICAR COM FRONT SE É NECESSARIO
+            jobSignedModelOptional.get().getJobDate().compareTo(jobSignedDto.getJobDate()) == 0)
+         {
+            return ResponseEntity.status(HttpStatus.OK).body(jobSignedService.update(id, jobSignedDto));
         }
-        
+
+        if (jobSignedService.existsJobSigned(jobSignedDto)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Já existe um serviço para este usuário realizar na data");
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(jobSignedService.update(id, jobSignedDto));
     }
 }

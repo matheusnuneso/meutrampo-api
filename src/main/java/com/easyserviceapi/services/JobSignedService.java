@@ -50,9 +50,9 @@ public class JobSignedService {
     }
 
     public boolean existsJobSigned(JobSignedDto jobSignedDto){
-        Long idJob = jobSignedDto.getIdJob();
+        Long idPerson = jobSignedDto.getIdPerson();
         Date jobDate = jobSignedDto.getJobDate();
 
-        return jobSignedRepository.existsByidJobAndJobDate(idJob, jobDate);
+        return jobSignedRepository.existsByidPersonAndJobDate(idPerson, jobDate);
     }
 }
