@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.easyserviceapi.dto.JobDto;
 import com.easyserviceapi.models.JobModel;
 import com.easyserviceapi.services.JobService;
-import com.easyserviceapi.services.PersonService;
-
 import lombok.var;
 
 @RestController
@@ -31,11 +29,9 @@ import lombok.var;
 public class JobController {
 
     final JobService jobService;
-    final PersonService personService;
 
-    public JobController(JobService jobService, PersonService personService) {
+    public JobController(JobService jobService) {
         this.jobService = jobService;
-        this.personService = personService;
     }
 
     @PostMapping

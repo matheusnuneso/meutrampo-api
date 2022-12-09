@@ -1,5 +1,6 @@
 package com.easyserviceapi.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,50 +17,42 @@ import com.easyserviceapi.repositories.JobSignedRepository;
 @Service
 public class JobSignedService {
 
-    final JobSignedRepository JobSignedRepository;
+    final JobSignedRepository jobSignedRepository;
 
     public JobSignedService(JobSignedRepository JobSignedRepository){
-        this.JobSignedRepository = JobSignedRepository;
+        this.jobSignedRepository = JobSignedRepository;
     }
 
     @Transactional
     public Object save(JobSignedModel JobSignedModel){
-        return JobSignedRepository.save(JobSignedModel);
+        return jobSignedRepository.save(JobSignedModel);
     }
 
     public List<JobSignedModel> findAll(){
-        return JobSignedRepository.findAll();
-    }
-    
-    public boolean existByidClient(Long idClient){
-        return JobSignedRepository.existByidClient(idClient);
-    }
-
-    public boolean existsByIdPerson(Long idPerson){
-        return JobSignedRepository.existByidClient(idPerson);
-    }
+        return jobSignedRepository.findAll();
+    }    
 
     public Optional<JobSignedModel> findById(Long id){
-        return JobSignedRepository.findById(id);
-    }
-
-
-    public List<JobSignedModel> findByIdPerson(Long idPerson){
-        return JobSignedRepository.findByIdPerson(idPerson);
-    }
- 
+        return jobSignedRepository.findById(id);
+    }  
 
     @Transactional
     public void delete(JobSignedModel JobSignedModel){
-        JobSignedRepository.delete(JobSignedModel);
+        jobSignedRepository.delete(JobSignedModel);
     }
 
-    public JobSignedModel update(Long id, JobSignedDto JobSignedDto){
-        JobSignedModel JobSignedModel = new JobSignedModel();
-        BeanUtils.copyProperties(JobSignedDto, JobSignedModel);
-        JobSignedModel.setId(id);
+    public JobSignedModel update(Long id, JobSignedDto jobSignedDto){
+        JobSignedModel jobSignedModel = new JobSignedModel();
+        BeanUtils.copyProperties(jobSignedDto, jobSignedModel);
+        jobSignedModel.setId(id);
         
-        return JobSignedRepository.save(JobSignedModel);
+        return jobSignedRepository.save(jobSignedModel);
     }
 
+    public boolean existsJobSigned(JobSignedDto jobSignedDto){
+        Long idJob = jobSignedDto.getIdJob();
+        Date jobDate = jobSignedDto.getJobDate();
+
+        return jobSignedRepository.existsByidJobAndJobDate(idJob, jobDate);
+    }
 }

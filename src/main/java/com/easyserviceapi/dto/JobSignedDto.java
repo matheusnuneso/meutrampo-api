@@ -1,8 +1,8 @@
 package com.easyserviceapi.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -10,18 +10,21 @@ public class JobSignedDto {
 
 
     @NotBlank
-    @Size(max = 20)
     private long idJob;
 
     @NotBlank
     private double finalPrice;
     
     @NotBlank
-    @Size(max = 20)
     private long idClient;
         
     @NotBlank
-    @Size(max = 20)
     private long idPerson;
+
+    @NotBlank   
+    private Date jobDate;
+    
+    @NotBlank    
+    private Date contractDate;
 
 }

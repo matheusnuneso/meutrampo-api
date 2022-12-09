@@ -21,76 +21,70 @@ import org.springframework.web.bind.annotation.RestController;
 import com.easyserviceapi.dto.JobSignedDto;
 import com.easyserviceapi.models.JobSignedModel;
 import com.easyserviceapi.services.JobSignedService;
-import com.easyserviceapi.services.PersonService;
-
 import lombok.var;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping(value = "api/JobSigned")
+@RequestMapping(value = "api/jobSigned")
 public class JobSignedController {
 
-    final JobSignedService JobSignedService;
-    final PersonService personService;
+    final JobSignedService jobSignedService;
+   
 
-    public JobSignedController(JobSignedService JobSignedService, PersonService personService) {
-        this.JobSignedService = JobSignedService;
-        this.personService = personService;
+    public JobSignedController(JobSignedService jobSignedService) {
+        this.jobSignedService = jobSignedService;        
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveJobSigned(@RequestBody @Valid JobSignedDto JobSignedDto) {
+    public ResponseEntity<Object> saveJobSigned(@RequestBody @Valid JobSignedDto jobSignedDto) {
 
-        var JobSignedModel = new JobSignedModel();
-        BeanUtils.copyProperties(JobSignedDto, JobSignedModel);
+        var jobSignedModel = new JobSignedModel();
+        if(jobSignedService.existsJobSigned(jobSignedDto)){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe um serviço para este usuário realizar na data");
+        }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(JobSignedService.save(JobSignedModel));
+        BeanUtils.copyProperties(jobSignedDto, jobSignedModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(jobSignedService.save(jobSignedModel));
     }
 
     @GetMapping
     public ResponseEntity<List<JobSignedModel>> getAllJobSigned() {
-        return ResponseEntity.status(HttpStatus.OK).body(JobSignedService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(jobSignedService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneJobSigned(@PathVariable(value = "id") Long id) {
-        Optional<JobSignedModel> JobSignedModelOptional = JobSignedService.findById(id);
-        if (!JobSignedModelOptional.isPresent()) {
+        Optional<JobSignedModel> jobSignedModelOptional = jobSignedService.findById(id);
+        if (!jobSignedModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trabalho não encontrado");
         }
-        return ResponseEntity.status(HttpStatus.OK).body((JobSignedModelOptional.get()));
+        return ResponseEntity.status(HttpStatus.OK).body((jobSignedModelOptional.get()));
 
-    }
-
-    @GetMapping("/person-JobSigneds/{idPerson}")
-    public ResponseEntity<Object> getPersonJobSigneds(@PathVariable(value = "idPerson") Long idPerson) {
-        if (JobSignedService.existsByIdPerson(idPerson)) {
-            return ResponseEntity.status(HttpStatus.OK).body(JobSignedService.findByIdPerson(idPerson));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
-    }
+    }   
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteJobSigned(@PathVariable(value = "id") Long id) {
-        Optional<JobSignedModel> JobSignedModelOptional = JobSignedService.findById(id);
-        if (!JobSignedModelOptional.isPresent()) {
+        Optional<JobSignedModel> jobSignedModelOptional = jobSignedService.findById(id);
+        if (!jobSignedModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trabalho não encontrado");
         }
-        JobSignedService.delete(JobSignedModelOptional.get());
+        jobSignedService.delete(jobSignedModelOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Delete concluído");
     }
 
-    /* 
+     
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateJobSigned(@PathVariable(value = "id") Long id, @RequestBody @Valid JobSignedDto JobSignedDto) {
-        Optional<JobSignedModel> JobSignedModelOptional = JobSignedService.findById(id);
-        if (!JobSignedModelOptional.isPresent()) {
+    public ResponseEntity<Object> updateJobSigned(@PathVariable(value = "id") Long id, @RequestBody @Valid JobSignedDto jobSignedDto) {
+        Optional<JobSignedModel> jobSignedModelOptional = jobSignedService.findById(id);
+        if (!jobSignedModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trabalho não encontrado");
         }
 
-        if (JobSignedService.existsByTitle(JobSignedDto.getTitle())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflito");
+        if(jobSignedService.existsJobSigned(jobSignedDto)){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe um serviço para este usuário realizar na data");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(JobSignedService.update(id, JobSignedDto));
-    }*/
+        
+        return ResponseEntity.status(HttpStatus.OK).body(jobSignedService.update(id, jobSignedDto));
+    }
 }

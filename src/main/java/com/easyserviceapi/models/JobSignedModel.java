@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
-@Table(name = "TB_JOB")
+@Table(name = "TB_JOB_SIGNED")
 @Entity
 @Data
 public class JobSignedModel implements Serializable {
