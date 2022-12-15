@@ -50,6 +50,8 @@ public class PersonController {
         var personModel = new PersonModel();
         BeanUtils.copyProperties(personDto, personModel);
 
+      
+
         return ResponseEntity.status(HttpStatus.CREATED).body(personService.save(personModel));
 
     }
