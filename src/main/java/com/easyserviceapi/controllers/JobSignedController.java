@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.easyserviceapi.dto.JobSignedDto;
 import com.easyserviceapi.models.JobSignedModel;
+import com.easyserviceapi.models.PersonModel;
 import com.easyserviceapi.services.JobSignedService;
+import com.easyserviceapi.services.PersonService;
+
 import lombok.var;
 
 @RestController
@@ -61,6 +64,14 @@ public class JobSignedController {
         }
         return ResponseEntity.status(HttpStatus.OK).body((jobSignedModelOptional.get()));
 
+    }
+
+    @GetMapping("/jobsigned/{id}")
+    public ResponseEntity<Object> getAllJobSignedId(@PathVariable(value = "id") Long id){
+        if (jobSignedService.existsByIdPerson(id)) {
+            return ResponseEntity.status(HttpStatus.OK).body(jobSignedService.findByIdPerson(id));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
     }
 
     @DeleteMapping("/{id}")

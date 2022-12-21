@@ -34,7 +34,11 @@ public class JobSignedService {
 
     public Optional<JobSignedModel> findById(Long id){
         return jobSignedRepository.findById(id);
-    }  
+    } 
+
+    public List<JobSignedModel> findByIdPerson(Long idPerson){
+        return jobSignedRepository.findByIdPerson(idPerson);
+    }
 
     @Transactional
     public void delete(JobSignedModel JobSignedModel){
@@ -54,5 +58,9 @@ public class JobSignedService {
         Date jobDate = jobSignedDto.getJobDate();
 
         return jobSignedRepository.existsByidPersonAndJobDate(idPerson, jobDate);
+    }
+
+    public boolean existsByIdPerson(Long idPerson){
+        return jobSignedRepository.existsByIdPerson(idPerson);
     }
 }
