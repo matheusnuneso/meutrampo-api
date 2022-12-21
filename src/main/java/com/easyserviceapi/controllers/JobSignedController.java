@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.easyserviceapi.dto.JobSignedDto;
 import com.easyserviceapi.models.JobSignedModel;
-import com.easyserviceapi.models.PersonModel;
 import com.easyserviceapi.services.JobSignedService;
-import com.easyserviceapi.services.PersonService;
-
 import lombok.var;
 
 @RestController
@@ -66,7 +63,7 @@ public class JobSignedController {
 
     }
 
-    @GetMapping("/jobsigned/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<Object> getAllJobSignedId(@PathVariable(value = "id") Long id){
         if (jobSignedService.existsByIdPerson(id)) {
             return ResponseEntity.status(HttpStatus.OK).body(jobSignedService.findByIdPerson(id));
