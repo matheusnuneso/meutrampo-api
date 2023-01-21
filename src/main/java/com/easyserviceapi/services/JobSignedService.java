@@ -1,5 +1,6 @@
 package com.easyserviceapi.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -11,16 +12,23 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.easyserviceapi.dto.JobSignedDto;
+import com.easyserviceapi.dto.JobSignedPersonDto;
 import com.easyserviceapi.models.JobSignedModel;
+import com.easyserviceapi.repositories.JobRepository;
 import com.easyserviceapi.repositories.JobSignedRepository;
+import com.easyserviceapi.repositories.PersonRepository;
 
 @Service
 public class JobSignedService {
 
     final JobSignedRepository jobSignedRepository;
+    final JobRepository jobRepository;
+    final PersonRepository personRepository;
 
-    public JobSignedService(JobSignedRepository JobSignedRepository){
+    public JobSignedService(JobSignedRepository JobSignedRepository, JobRepository jobRepository, PersonRepository personRepository){
         this.jobSignedRepository = JobSignedRepository;
+        this.jobRepository = jobRepository;
+        this.personRepository = personRepository;
     }
 
     @Transactional
@@ -36,8 +44,24 @@ public class JobSignedService {
         return jobSignedRepository.findById(id);
     } 
 
-    public List<JobSignedModel> findByIdPerson(Long idPerson){
-        return jobSignedRepository.findByIdPerson(idPerson);
+    public List<JobSignedPersonDto> findByIdPerson(Long idPerson){
+        List<JobSignedModel> listJobSigned = jobSignedRepository.findByIdPerson(idPerson);
+        List<JobSignedPersonDto> listJobSignedPerson = new ArrayList<>();
+
+        for (JobSignedModel jobSigned : listJobSigned) {
+            listJobSignedPerson.add(
+                new JobSignedPersonDto(
+                    jobSigned.getId(),
+                    this.jobRepository.findById(jobSigned.getIdJob()).get().getTitle(),
+                    jobSigned.getFinalPrice(),
+                    this.personRepository.findById(jobSigned.getIdClient()).get().getFullName(),
+                    jobSigned.getJobDate(),
+                    jobSigned.getContractDate()
+                )
+            );
+        }
+
+        return listJobSignedPerson;
     }
 
     @Transactional
